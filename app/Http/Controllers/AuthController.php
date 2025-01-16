@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 
 class AuthController extends Controller
@@ -33,17 +34,45 @@ class AuthController extends Controller
 
     // login 
     public function login(Request $request)
-    {
+{
+    try {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
         $credentials = $request->only('email', 'password');
 
-        if(!Auth::attempt($credentials)){
-            return response()->json(['message' => 'Unauthorized'], 401);
+        if (!Auth::attempt($credentials)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid credentials'
+            ], 401);
         }
 
         $user = Auth::user();
-        return response()->json(['token' => $user->createToken('authToken')->plainTextToken], 200);
 
+         
+
+        $token = $user->createToken('authToken')->plainTextToken;
+
+         // Create a cookie that lasts for 60 minutes (you can adjust the time)  
+         $cookie = cookie('authToken', $token, 60, '/', null, true, true);
+
+
+        return response()->json([
+            'status' => 'success',
+            'user' => $user,
+            'token' => $token
+        ], 200)->cookie($cookie);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
     }
+}
 
     //user info
     public function userInfo(Request $request)

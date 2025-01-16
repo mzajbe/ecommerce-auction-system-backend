@@ -22,8 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'userInf
 
 
 
+
 //auction
 
 Route::get('/auctions', [AuctionController::class, 'index']);
 Route::post('/auctions', [AuctionController::class, 'store']);
-
