@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role', //i just add the role for multiple user(user,admin,seller)
     ];
 
     /**
@@ -45,4 +46,28 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Check if the user is an admin.
+     *
+     * @return bool
+     */
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+
+    /**
+     * Check if the user is a regular user.
+     *
+     * @return bool
+     */
+
+    public function isUser(): bool
+    {
+        return $this->role === 'user';
+    }
+
 }
