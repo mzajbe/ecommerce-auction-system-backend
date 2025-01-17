@@ -25,6 +25,8 @@ class User extends Authenticatable
         'role', //i just add the role for multiple user(user,admin,seller)
     ];
 
+    
+
     /**
      * The attributes that should be hidden for serialization.
      *
