@@ -18,9 +18,9 @@ Route::post('/products', [ProductController::class, 'store']);
 
 // authentication 
 //user and admin
-// Route::post('/register',[AuthController::class,'register']);
-// Route::post('/login',[AuthController::class,'login']);
-// Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'userInfo']);
+Route::post('/register',[AuthController::class,'register']);
+Route::post('/login',[AuthController::class,'login']);
+Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'userInfo']);
 
 //company
 Route::post('/company/register', [CompanyAuthController::class, 'register']);

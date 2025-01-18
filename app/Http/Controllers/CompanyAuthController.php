@@ -34,49 +34,6 @@ class CompanyAuthController extends Controller
     }
 
 
-    // Login  
-    // public function login(Request $request)
-    // {
-    //     try {
-    //         $request->validate([
-    //             'email' => 'required|email',
-    //             'password' => 'required',
-    //         ]);
-
-    //         $credentials = $request->only('email', 'password');
-
-
-
-    //         if (!Auth::attempt($credentials)) {
-    //             return response()->json([
-    //                 'status' => 'error',
-    //                 'message' => 'Invalid credentials',
-    //             ], 401);
-    //         }
-
-    //         // $company = Auth::user(); // Get the authenticated company  
-
-    //         $user = Auth::user(); 
-    //         $token = $user->createToken('authToken')->plainTextToken;
-
-    //         // $token = $company->createToken('CompanyToken')->plainTextToken;
-
-    //         // Create a cookie that lasts for 60 minutes  
-    //         $cookie = cookie('authToken', $token, 60, '/', null, true, true);
-
-    //         return response()->json([  
-    //             'status' => 'success',  
-    //             'user' => $user,  
-    //             'token' => $token  
-    //         ], 200);
-    //     } catch (Exception $e) {
-    //         return response()->json([
-    //             'status' => 'error',
-    //             'message' => 'Login failed: ' . $e->getMessage(),
-    //         ], 500);
-    //     }
-    // }
-
     public function login(Request $request)
     {
         try {
@@ -94,7 +51,7 @@ class CompanyAuthController extends Controller
 
             $company = Auth::guard('company')->user();
             $token = $company->createToken('companyAuthToken')->plainTextToken;
-            
+
             $cookie = cookie('companyAuthToken', $token, 60, '/', null, true, true);
 
             return response()->json([
