@@ -13,21 +13,23 @@ return new class extends Migration
     {
         Schema::create('auctions', function (Blueprint $table) {
             $table->id();
-            $table->string('car_name');
-            $table->string('model');
-            $table->text('description')->nullable();
-            $table->string('image_url');
-            $table->integer('passenger_capacity');
-            $table->string('body_style'); // e.g., sedan
-            $table->integer('cylinders');
-            $table->string('color');
-            $table->string('engine_type');
-            $table->string('transmission');
-            $table->string('vehicle_type'); // auto or manual
-            $table->string('fuel'); // diesel or petrol
-            $table->text('damage_description')->nullable();
-            $table->decimal('starting_price', 10, 2);
-            $table->timestamps();
+        $table->string('car_name');
+        $table->string('model');
+        $table->text('description')->nullable();
+        $table->string('image_url');
+        $table->integer('passenger_capacity');
+        $table->string('body_style'); // e.g., sedan
+        $table->integer('cylinders');
+        $table->string('color');
+        $table->string('engine_type');
+        $table->string('transmission');
+        $table->string('vehicle_type'); // auto or manual
+        $table->string('fuel'); // diesel or petrol
+        $table->text('damage_description')->nullable();
+        $table->decimal('starting_price', 10, 2);
+        $table->timestamp('start_time')->nullable(); // Auction start time
+        $table->timestamp('end_time')->nullable();   // Auction end time
+        $table->timestamps();
         });
     }
 

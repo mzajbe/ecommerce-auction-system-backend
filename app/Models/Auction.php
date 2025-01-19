@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Auction extends Model
 {
     //
-    use HasFactory;  
+    use HasFactory;
 
-    protected $fillable = [  
+    protected $fillable = [
         'car_name',
         'model',
         'description',
@@ -25,5 +25,7 @@ class Auction extends Model
         'fuel',
         'damage_description',
         'starting_price',
-    ]; 
+        'start_time',
+        'end_time',
+    ];
 }

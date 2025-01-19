@@ -34,3 +34,4 @@ Route::middleware('auth:sanctum')->get('/company', [CompanyAuthController::class
 
 Route::get('/auctions', [AuctionController::class, 'index']);
 Route::post('/auctions', [AuctionController::class, 'store']);
+Route::get('/auctions/search', [AuctionController::class, 'search']); // New search route

@@ -37,6 +37,8 @@ class AuctionController extends Controller
                 'fuel' => 'required|string|max:255',
                 'damage_description' => 'nullable|string',
                 'starting_price' => 'required|numeric',
+                'start_time' => 'required|date_format:Y-m-d H:i:s',
+                'end_time' => 'required|date_format:Y-m-d H:i:s|after:start_time',
             ]);
 
             $auction = Auction::create($validatedData);
@@ -45,6 +47,7 @@ class AuctionController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -77,11 +80,40 @@ class AuctionController extends Controller
             'fuel' => 'sometimes|required|string|max:255',
             'damage_description' => 'nullable|string',
             'starting_price' => 'sometimes|required|numeric',
+            'start_time' => 'sometimes|required|date_format:Y-m-d H:i:s',
+            'end_time' => 'sometimes|required|date_format:Y-m-d H:i:s|after:start_time',
         ]);
 
         $auction->update($validatedData);
         return response()->json($auction);
     }
+
+    /**
+     * Search for auctions based on query parameters.
+     */
+
+    public function search(Request $request)
+    {
+        $query = Auction::query();
+
+        if ($request->has('car_name')) {
+            $query->where('car_name', 'like', '%' . $request->input('car_name') . '%');
+        }
+
+        if ($request->has('model')) {
+            $query->where('model', $request->input('model'));
+        }
+
+        if ($request->has('id')) {
+            $query->where('id', $request->input('id'));
+        }
+
+        // Add more filters as needed...
+
+        $results = $query->get();
+        return response()->json($results);
+    }
+
 
     /**
      * Remove the specified resource from storage.
