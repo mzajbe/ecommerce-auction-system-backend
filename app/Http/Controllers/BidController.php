@@ -24,9 +24,19 @@ class BidController extends Controller
         return response()->json($bid, 201);
     }
 
+    // public function index($auctionId)
+    // {
+    //     $bids = Bid::where('auction_id', $auctionId)->orderBy('bid_amount', 'desc')->get();
+    //     return response()->json($bids);
+    // }
+
     public function index($auctionId)
     {
-        $bids = Bid::where('auction_id', $auctionId)->orderBy('bid_amount', 'desc')->get();
+        $bids = Bid::where('auction_id', $auctionId)
+            ->with('user') // Include the user data
+            ->orderBy('bid_amount', 'desc')
+            ->get();
+
         return response()->json($bids);
     }
 }

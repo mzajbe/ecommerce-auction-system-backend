@@ -13,10 +13,6 @@ use App\Http\Controllers\BidController;
 // })->middleware('auth:sanctum');
 
 
-// New product routes  
-Route::get('/products', [ProductController::class, 'index']);  
-Route::post('/products', [ProductController::class, 'store']);
-
 // authentication 
 //user and admin
 Route::post('/register',[AuthController::class,'register']);
