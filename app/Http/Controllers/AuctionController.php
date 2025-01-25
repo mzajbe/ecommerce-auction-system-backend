@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Auction;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AuctionController extends Controller
 {
@@ -13,7 +14,8 @@ class AuctionController extends Controller
      */
     public function index()
     {
-        return Auction::all();
+        $auctions = Auction::with('company')->get(); // Include company details for all auctions
+        return response()->json($auctions);
     }
 
     /**
@@ -39,14 +41,34 @@ class AuctionController extends Controller
                 'starting_price' => 'required|numeric',
                 'start_time' => 'required|date_format:Y-m-d H:i:s',
                 'end_time' => 'required|date_format:Y-m-d H:i:s|after:start_time',
+                // 'is_live' => 'sometimes|boolean',
+                'company_id' => 'required|exists:companies,id', // Validate company_id
             ]);
 
+            // Automatically set is_live to false by default
+            $validatedData['is_live'] = false;
+
             $auction = Auction::create($validatedData);
+            // Include company details in the response
+            $auction = Auction::with('company')->find($auction->id);
             return response()->json($auction, 201);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function updateAuctionStatus()
+{
+    $now = Carbon::now();
+    $auctions = Auction::all();
+
+    foreach ($auctions as $auction) {
+        $auction->is_live = $now->between($auction->start_time, $auction->end_time);
+        $auction->save();
+    }
+
+    return response()->json(['message' => 'Auction statuses updated successfully.']);
+}
 
 
     /**
@@ -54,7 +76,7 @@ class AuctionController extends Controller
      */
     public function show(string $id)
     {
-        $auction = Auction::findOrFail($id);
+        $auction = Auction::with('company')->findOrFail($id); // Include company details
         return response()->json($auction);
     }
 
@@ -82,8 +104,9 @@ class AuctionController extends Controller
             'starting_price' => 'sometimes|required|numeric',
             'start_time' => 'sometimes|required|date_format:Y-m-d H:i:s',
             'end_time' => 'sometimes|required|date_format:Y-m-d H:i:s|after:start_time',
+            // 'validatedData' => 'sometimes|boolean',
+            'company_id' => 'sometimes|required|exists:companies,id', // Validate company_id
         ]);
-
         $auction->update($validatedData);
         return response()->json($auction);
     }

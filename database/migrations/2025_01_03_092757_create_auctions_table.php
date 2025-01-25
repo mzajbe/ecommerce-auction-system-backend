@@ -10,9 +10,9 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('auctions', function (Blueprint $table) {
-            $table->id();
+{
+    Schema::create('auctions', function (Blueprint $table) {
+        $table->id();
         $table->string('car_name');
         $table->string('model');
         $table->text('description')->nullable();
@@ -29,9 +29,11 @@ return new class extends Migration
         $table->decimal('starting_price', 10, 2);
         $table->timestamp('start_time')->nullable(); // Auction start time
         $table->timestamp('end_time')->nullable();   // Auction end time
+        $table->unsignedBigInteger('company_id'); // Add company_id
+        $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade'); // Set foreign key constraint
         $table->timestamps();
-        });
-    }
+    });
+}
 
     /**
      * Reverse the migrations.
