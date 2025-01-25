@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuctionController;  
 use App\Http\Controllers\CompanyAuthController;
 use App\Http\Controllers\BidController;
+use App\Http\Controllers\CartController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -38,4 +39,15 @@ Route::get('/auctions/search', [AuctionController::class, 'search']); // New sea
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/bids', [BidController::class, 'store']);
     Route::get('/auctions/{auction}/bids', [BidController::class, 'index']);
+});
+
+
+//cart
+
+Route::middleware('auth:sanctum')->group(function () {
+    // Add winning auction to cart
+    Route::post('/cart/add-winning-auction/{auctionId}', [CartController::class, 'addWinningAuctionToCart']);
+
+    // View user's cart
+    Route::get('/cart', [CartController::class, 'viewCart']);
 });
