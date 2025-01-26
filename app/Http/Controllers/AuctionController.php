@@ -41,12 +41,12 @@ class AuctionController extends Controller
                 'starting_price' => 'required|numeric',
                 'start_time' => 'required|date_format:Y-m-d H:i:s',
                 'end_time' => 'required|date_format:Y-m-d H:i:s|after:start_time',
-                // 'is_live' => 'sometimes|boolean',
+                
                 'company_id' => 'required|exists:companies,id', // Validate company_id
             ]);
 
             // Automatically set is_live to false by default
-            $validatedData['is_live'] = false;
+            // $validatedData['is_live'] = false;
 
             $auction = Auction::create($validatedData);
             // Include company details in the response
@@ -91,6 +91,24 @@ public function getAuctionsByCompany($companyId)
 
     return response()->json($auctions);
 }
+
+/**
+ * Get all live auctions.
+ */
+public function getLiveAuctions()
+{
+    $now = Carbon::now();
+
+    // Fetch all live auctions
+    $liveAuctions = Auction::with('company')
+        ->where('start_time', '<=', $now)
+        ->where('end_time', '>=', $now)
+        ->get();
+
+    return response()->json($liveAuctions);
+}
+
+
 
 /**
  * Get live auctions for a specific company.

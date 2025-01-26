@@ -27,13 +27,9 @@ class Auction extends Model
         'starting_price',
         'start_time',
         'end_time',
-        'is_live', // Add this
         'company_id',
     ];
 
-    protected $casts = [
-        'is_live' => 'boolean',
-    ];
     
     
 

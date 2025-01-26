@@ -35,6 +35,8 @@ Route::middleware('auth:sanctum')->get('/company', [CompanyAuthController::class
 Route::get('/auctions', [AuctionController::class, 'index']);
 Route::post('/auctions', [AuctionController::class, 'store']);
 Route::get('/auctions/search', [AuctionController::class, 'search']); // New search route
+// Get all live auctions
+Route::get('/auctions/live', [AuctionController::class, 'getLiveAuctions']);
 
 // Get all auctions of a specific company
 Route::get('/companies/{companyId}/auctions', [AuctionController::class, 'getAuctionsByCompany']);
