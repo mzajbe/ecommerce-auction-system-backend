@@ -81,6 +81,36 @@ class AuctionController extends Controller
     }
 
     /**
+ * Get all auctions for a specific company.
+ */
+public function getAuctionsByCompany($companyId)
+{
+    $auctions = Auction::with('company')
+        ->where('company_id', $companyId)
+        ->get();
+
+    return response()->json($auctions);
+}
+
+/**
+ * Get live auctions for a specific company.
+ */
+public function getLiveAuctionsByCompany($companyId)
+{
+    $now = Carbon::now();
+    
+    $liveAuctions = Auction::with('company')
+        ->where('company_id', $companyId)
+        ->where('start_time', '<=', $now)
+        ->where('end_time', '>=', $now)
+        ->get();
+
+    return response()->json($liveAuctions);
+}
+
+
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)

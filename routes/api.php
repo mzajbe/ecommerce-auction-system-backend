@@ -8,6 +8,8 @@ use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\CompanyAuthController;
 use App\Http\Controllers\BidController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\SavedAuctionController;
+
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -33,6 +35,26 @@ Route::middleware('auth:sanctum')->get('/company', [CompanyAuthController::class
 Route::get('/auctions', [AuctionController::class, 'index']);
 Route::post('/auctions', [AuctionController::class, 'store']);
 Route::get('/auctions/search', [AuctionController::class, 'search']); // New search route
+
+// Get all auctions of a specific company
+Route::get('/companies/{companyId}/auctions', [AuctionController::class, 'getAuctionsByCompany']);
+
+// Get currently live auctions of a specific company
+Route::get('/companies/{companyId}/auctions/live', [AuctionController::class, 'getLiveAuctionsByCompany']);
+
+
+
+
+// Save auction
+// Save auction with explicit user_id
+Route::post('/saved-auctions', [SavedAuctionController::class, 'save']);
+
+// Get saved auctions for a user
+Route::get('/saved-auctions', [SavedAuctionController::class, 'index']);
+
+// Remove saved auction with explicit user_id
+Route::delete('/saved-auctions', [SavedAuctionController::class, 'remove']);
+
 
 
 // bids 
