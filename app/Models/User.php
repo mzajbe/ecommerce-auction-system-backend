@@ -22,7 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role', //i just add the role for multiple user(user,admin,seller)
+        'role', //i just add the role for multiple user(user,admin)
     ];
 
     

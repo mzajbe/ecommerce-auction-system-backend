@@ -44,7 +44,9 @@ Route::get('/companies/{companyId}/auctions', [AuctionController::class, 'getAuc
 // Get currently live auctions of a specific company
 Route::get('/companies/{companyId}/auctions/live', [AuctionController::class, 'getLiveAuctionsByCompany']);
 
-
+// Add these routes to your existing routes
+Route::put('/auctions/{id}', [AuctionController::class, 'update']);
+Route::delete('/auctions/{id}', [AuctionController::class, 'destroy']);
 
 
 // Save auction
